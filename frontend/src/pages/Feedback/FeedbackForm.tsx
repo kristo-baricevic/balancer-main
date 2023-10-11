@@ -202,6 +202,7 @@ const FeedbackForm = () => {
                     type="text"
                     id="name"
                     name="name"
+                    placeholder="First and Last Name"
                     onChange={handleChange}
                     value={values.name}
                     className={` focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none disabled:bg-gray-200`}
@@ -229,6 +230,7 @@ const FeedbackForm = () => {
                     type="text"
                     id="email"
                     name="email"
+                    placeholder="yourname@email.com"
                     onChange={handleChange}
                     value={values.email}
                     className={` focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none disabled:bg-gray-200`}
@@ -255,6 +257,7 @@ const FeedbackForm = () => {
                   <textarea
                     id="message"
                     name="message"
+                    placeholder="Please provide a detailed description of the challenges you're experiencing with our site."
                     onChange={handleChange}
                     value={values.message}
                     rows={8}
