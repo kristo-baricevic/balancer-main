@@ -284,7 +284,7 @@ const FeedbackForm = () => {
                       htmlFor="image"
                       className="cursor-pointer block"
                     >
-                      <div className="w-32 h-32 mx-auto mb-2">
+                      <div className={selectedImage ? "relative" : "w-32 h-32 mx-auto mb-2"}>
                         {selectedImage ? (
                           <>
                             <img 
