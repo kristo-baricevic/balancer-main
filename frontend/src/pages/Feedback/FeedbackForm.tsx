@@ -347,6 +347,11 @@ const FeedbackForm = () => {
               <button
                 type="button"
                 className="btnGray mr-5"
+                style={{ 
+                  height: '3rem', 
+                  padding: '0.5rem 2rem',
+                  fontSize: '20px',
+                }}
                 onClick={handleCancel}
               >
                 Cancel
@@ -362,7 +367,12 @@ const FeedbackForm = () => {
                     }`}
                   onMouseDown={handleMouseDown}
                   onMouseUp={handleMouseUp}
-                  disabled={isLoading} 
+                  disabled={isLoading}
+                  style={{ 
+                    height: '3rem', 
+                    padding: '0.5rem 2rem',
+                    fontSize: '20px',
+                  }} 
                 >
                   {isLoading ? ( 
                     <div className="flex items-center  justify-center">
