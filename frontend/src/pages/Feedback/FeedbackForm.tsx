@@ -178,7 +178,7 @@ const FeedbackForm = () => {
                 </label>
                 <input id="bug" name="feedback-type" type="radio" className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" value="No" />
                 <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="psychotic-no">
-                  Bug
+                  Problem
                 </label>
                 <input id="general-improvements" name="feedback-type" type="radio" className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" value="No" />
                 <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="psychotic-no">
