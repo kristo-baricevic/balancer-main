@@ -339,6 +339,7 @@ const FeedbackForm = () => {
                       className="hidden" 
                     />
                   </div>
+                  <p className="italic">Accepted file types: .jpg, .png, .pdf</p>
                 </dd>
               </fieldset>
             </div>
