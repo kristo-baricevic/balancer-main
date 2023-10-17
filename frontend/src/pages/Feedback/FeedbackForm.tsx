@@ -347,7 +347,7 @@ const FeedbackForm = () => {
             <div className="flex w-full justify-end">
               <button
                 type="button"
-                className="btnGray mr-5"
+                className="btnGray mr-20"
                 style={{ 
                   height: '3rem', 
                   padding: '0.5rem 2rem',
