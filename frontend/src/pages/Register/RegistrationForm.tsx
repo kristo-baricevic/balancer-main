@@ -10,6 +10,7 @@ const LoginForm = () => {
     onSubmit: (values) => {
       console.log("values", values);
       // make registration post request here.
+      
     },
   });
   return (
