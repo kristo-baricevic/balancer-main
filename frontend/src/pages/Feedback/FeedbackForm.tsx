@@ -8,14 +8,14 @@ interface FormValues {
   name: string;
   email: string;
   message: string;
-  image: string,
+  image: string;
 }
 
 const FeedbackForm = () => {
   const [feedback, setFeedback] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isPressed, setIsPressed] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   const feedbackValidation = object().shape({
     name: string().required("Name is a required field"),
@@ -27,13 +27,12 @@ const FeedbackForm = () => {
 
   // implement useEffect to ensure that submit button causes changes in state
   useEffect(() => {
-
-    // Update a feedback message div to render after Submit 
+    // Update a feedback message div to render after Submit
     const feedbackMessage = document.getElementById("feedback-message");
     if (feedbackMessage) {
       feedbackMessage.innerText = feedback;
     }
-    
+
     // Update an error message div after Submit
     const errorMessageDiv = document.getElementById("error-message");
     if (errorMessageDiv) {
@@ -42,7 +41,7 @@ const FeedbackForm = () => {
   }, [feedback, errorMessage]);
 
   //reset the form fields and states when clicking cancel
-  const handleCancel =() => {
+  const handleCancel = () => {
     resetForm();
     setFeedback("");
     setErrorMessage("");
@@ -51,7 +50,7 @@ const FeedbackForm = () => {
   const handleMouseDown = () => {
     setIsPressed(true);
   };
-  
+
   const handleMouseUp = () => {
     setIsPressed(false);
   };
@@ -89,17 +88,20 @@ const FeedbackForm = () => {
         setFeedback("");
         try {
           // Call 1: Create Feedback request
-          const response = await axios.post("http://localhost:8000/api/jira/create_new_feedback/", {
-            name: values.name,
-            email: values.email,
-            message: values.message,
-          }, 
-          {
-            headers: {
-              "Content-Type": "application/json",
+          const response = await axios.post(
+            "http://localhost:8000/api/jira/create_new_feedback/",
+            {
+              name: values.name,
+              email: values.email,
+              message: values.message,
             },
-          });
-        
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
           // check to see if request was successful and get the issue key
           if (response.data.status === 201) {
             const issueKey = response.data.issueKey;
@@ -143,16 +145,16 @@ const FeedbackForm = () => {
               } else {
                 setErrorMessage("Error uploading the image.");
                 console.log(response2);
-              } 
+              }
             } else {
               setFeedback("Feedback submitted successfully!");
               resetForm();
-            } 
-          } else {
-              setErrorMessage("Error creating a new feedback request.");
             }
-          } catch (error) {
-            setErrorMessage("An error occurred while submitting the form");
+          } else {
+            setErrorMessage("Error creating a new feedback request.");
+          }
+        } catch (error) {
+          setErrorMessage("An error occurred while submitting the form");
         }
       },
       validationSchema: feedbackValidation,
@@ -160,11 +162,11 @@ const FeedbackForm = () => {
 
   return (
     <>
-    <div className="flex w-[100%] justify-between">
-      <h2 className="header_logo cursor-pointer font-satoshi text-xl font-bold text-gray-600  hover:text-blue-600 ">
-        Leave Us Feedback!
-      </h2>
-    </div>
+      <div className="flex w-[100%] justify-between">
+        <h2 className="header_logo cursor-pointer font-satoshi text-xl font-bold text-gray-600  hover:text-blue-600 ">
+          Leave Us Feedback!
+        </h2>
+      </div>
       <section className="mx-auto w-full">
         <form onSubmit={handleSubmit} className="mt-2">
           <div className="summary_box font_body">
@@ -178,7 +180,7 @@ const FeedbackForm = () => {
                 </label>
                 <input id="bug" name="feedback-type" type="radio" className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" value="No" />
                 <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="psychotic-no">
-                  Problem
+                  Bug
                 </label>
                 <input id="general-improvements" name="feedback-type" type="radio" className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" value="No" />
                 <label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="psychotic-no">
@@ -287,34 +289,36 @@ const FeedbackForm = () => {
                       htmlFor="image"
                       className="cursor-pointer block"
                     >
-                      <div className={selectedImage ? "relative" : "w-32 h-32 mx-auto mb-2"}>
+                      <div className="w-32 h-32 mx-auto mb-2">
                         {selectedImage ? (
                           <>
-                            <img 
+                            <img
                               src={URL.createObjectURL(selectedImage)}
                               alt="Selected Image"
-                              className="h-full w-full object-cover rounded-lg"
+                              className="h-full w-full rounded-lg object-cover"
                             />
                             <button
                               type="button"
                               onClick={(e) => {
                                 e.preventDefault();
                                 setSelectedImage(null);
-                                const fileInput = document.getElementById("image");
+                                const fileInput = document.getElementById(
+                                  "image"
+                                ) as HTMLInputElement;
                                 if (fileInput) {
                                   fileInput.value = "";
                                 }
                               }}
-                              className="absolute top-2 right-2 bg-white rounded-full p-1.5 cursor-pointer"
+                              className="absolute right-2 top-2 cursor-pointer rounded-full bg-white p-1.5"
                             >
                               X
                             </button>
                           </>
                         ) : (
                           <img
-                            src="../src/assets/upload-image-icon.png" 
+                            src="../src/assets/upload-image-icon.png"
                             alt="Upload Image"
-                            className="h-full w-full object-cover rounded-lg"
+                            className="h-full w-full rounded-lg object-cover"
                           />
                         )}
                       </div>
@@ -324,9 +328,9 @@ const FeedbackForm = () => {
                       id="image"
                       name="image"
                       onChange={(e) => {
-                        const file = e.target.files?.[0]; 
+                        const file = e.target.files?.[0];
                         if (file) {
-                          // Handle the selected file 
+                          // Handle the selected file
                           setSelectedImage(file);
                           handleChange({
                             target: {
@@ -336,7 +340,7 @@ const FeedbackForm = () => {
                           });
                         }
                       }}
-                      className="hidden" 
+                      className="hidden"
                     />
                   </div>
                   <p className="italic">Accepted file types: .jpg, .png, .pdf</p>
@@ -347,12 +351,7 @@ const FeedbackForm = () => {
             <div className="flex w-full justify-end">
               <button
                 type="button"
-                className="btnGray mr-20"
-                style={{ 
-                  height: '3rem', 
-                  padding: '0.5rem 2rem',
-                  fontSize: '20px',
-                }}
+                className="btnGray mr-5"
                 onClick={handleCancel}
               >
                 Cancel
@@ -368,12 +367,7 @@ const FeedbackForm = () => {
                     }`}
                   onMouseDown={handleMouseDown}
                   onMouseUp={handleMouseUp}
-                  disabled={isLoading}
-                  style={{ 
-                    height: '3rem', 
-                    padding: '0.5rem 2rem',
-                    fontSize: '20px',
-                  }} 
+                  disabled={isLoading} 
                 >
                   {isLoading ? ( 
                     <div className="flex items-center  justify-center">

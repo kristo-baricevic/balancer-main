@@ -1,11 +1,9 @@
 import { FormEvent, ChangeEvent, useEffect, useState } from "react";
-
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
-
 import { PatientInfo } from "./PatientTypes";
 import Tooltip from "../../components/Tooltip";
-import ErrorMessage from '../../components/ErrorMessage';
+// import ErrorMessage from "../../components/ErrorMessage";
 
 // TODO: refactor with Formik
 
@@ -24,7 +22,7 @@ const NewPatientForm = ({
   const [isPressed, setIsPressed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [errors, setErrors] = useState<string[]>([]);
+  // const [errors, setErrors] = useState<string[]>([]);
 
   const [newPatientInfo, setNewPatientInfo] = useState<PatientInfo>({
     ID: "",
@@ -33,7 +31,6 @@ const NewPatientForm = ({
     Description: "",
     CurrentMedications: "",
     PriorMedications: "",
-    PossibleMedications: { drugs: [] },
     Mania: "False",
     Depression: "False",
     Hypomania: "False",
@@ -71,57 +68,53 @@ const NewPatientForm = ({
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    
     const payload = {
-      diagnosis:
-      newPatientInfo.Diagnosis !== null ? newPatientInfo.Diagnosis : "Null",
+      state:
+        newPatientInfo.Diagnosis !== null ? newPatientInfo.Diagnosis : "Null",
     };
-    
-    // Check if Diagnosis is "Null"
-    if (newPatientInfo.Diagnosis === 'Null') {
 
-      setErrors([
-        'Please select a current state.'
-      ]);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Check if Diagnosis is "Null"
+    if (newPatientInfo.Diagnosis === "Null") {
+      newPatientInfo.Diagnosis = "Manic";
+      // setErrors(["Please select a current state."]);
+      // window.scrollTo({ top: 0, behavior: "smooth" });
       return; // Prevent form submission
     }
-    
+
     setIsLoading(true); // Start loading
 
     try {
       const baseUrl = import.meta.env.VITE_API_BASE_URL;
+      const url = `${baseUrl}/chatgpt`;
 
-      const { data } = await axios.post(`${baseUrl}/diagnosis`, payload);
+      const { data } = await axios.post(url + `/list_meds`, payload);
 
-      const drugsResponse = await axios.post(`${baseUrl}/listDrugs`, payload);
+      console.log(data);
 
-      const possibleMedicationsData = drugsResponse.data;
+      const categorizedMedications = {
+        first: data.first ?? [],
+        second: data.second ?? [],
+        third: data.third ?? [],
+      };
 
-      if (possibleMedicationsData && Array.isArray(possibleMedicationsData)) {
-        // Extract drugs property from each object and flatten it into a single array
-        const possibleMedicationNames = possibleMedicationsData
-          .map((medication: { drugs: string[] }) => medication.drugs)
-          .flat();
+      console.log(categorizedMedications.first);
+      console.log(categorizedMedications.second);
 
-        setPatientInfo((prev) => ({
-          ...prev,
-          PossibleMedications: { drugs: possibleMedicationNames },
-        }));
-      }
+      setPatientInfo((prev) => ({
+        ...prev,
+        PossibleMedications: categorizedMedications,
+      }));
+
       const generatedGuid = uuidv4();
       const firstFiveCharacters = generatedGuid.substring(0, 5);
 
       setPatientInfo({ ...newPatientInfo, ID: firstFiveCharacters });
 
       if (data) {
-        const description = data.message.choices[0].message.content;
-
         const newDescription = {
           ...newPatientInfo,
-          Description: description,
           ID: firstFiveCharacters,
-          PossibleMedications: possibleMedicationsData,
+          PossibleMedications: categorizedMedications,
         };
 
         const updatedAllPatientInfo = [newDescription, ...allPatientInfo];
@@ -164,7 +157,6 @@ const NewPatientForm = ({
       Description: "",
       CurrentMedications: "",
       PriorMedications: "",
-      PossibleMedications: { drugs: [] },
       Mania: "False",
       Depression: "False",
       Hypomania: "False",
@@ -190,7 +182,6 @@ const NewPatientForm = ({
       Description: "",
       CurrentMedications: "",
       PriorMedications: "",
-      PossibleMedications: { drugs: [] },
       Mania: "False",
       Depression: "False",
       Hypomania: "False",
@@ -203,7 +194,6 @@ const NewPatientForm = ({
       Reproductive: "No",
       risk_pregnancy: "No",
     }));
-
   };
 
   const handleCheckboxChange = (
@@ -259,11 +249,11 @@ const NewPatientForm = ({
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                stroke-width="2"
+                strokeWidth="2"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M6 12h12"
                 />
               </svg>
@@ -274,11 +264,11 @@ const NewPatientForm = ({
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                stroke-width="2"
+                strokeWidth="2"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                 />
               </svg>
@@ -288,7 +278,7 @@ const NewPatientForm = ({
         {enterNewPatient && (
           <form onSubmit={handleSubmit} className="mt-2 ">
             <div className="summary_box font_body">
-              <ErrorMessage errors={errors} />
+              {/* <ErrorMessage errors={errors} /> */}
               <div className=" flex items-center border-b border-gray-900/10 py-6  ">
                 <div className="w-[300px]">
                   <label
@@ -306,12 +296,12 @@ const NewPatientForm = ({
                     autoComplete="current-state"
                     className={isLoading ? " url_input_loading" : "dropdown"}
                   >
-                    <option value="Null">  </option>
+                    {/* <option value="Null"> </option> */}
                     <option value="Manic"> Manic </option>
                     <option value="Depressed">Depressed</option>
                     <option value="Hypomanic">Hypomanic</option>
                     <option value="Euthymic">Euthymic</option>
-                    <option value="Mixed">Mixed</option>
+                    {/* <option value="Mixed">Mixed</option> */}
                   </select>
                 </div>
                 {/* {errorMessage && (
@@ -752,7 +742,7 @@ const NewPatientForm = ({
                     className={
                       isLoading
                         ? "input_loading peer w-1/2"
-                        : "input  w-full mt-2"
+                        : "input  mt-2 w-full"
                     }
                   />
                 </div>
@@ -787,7 +777,7 @@ const NewPatientForm = ({
                     className={
                       isLoading
                         ? "input_loading peer w-1/2"
-                        : "input w-full mt-2"
+                        : "input mt-2 w-full"
                     }
                   />
                 </div>
@@ -805,12 +795,14 @@ const NewPatientForm = ({
                 </div>
                 <button
                   type="submit"
-                  className={`btnBlue  ${isPressed &&
+                  className={`btnBlue  ${
+                    isPressed &&
                     "transition-transform focus:outline-none focus:ring focus:ring-blue-200"
-                    }${isLoading
+                  }${
+                    isLoading
                       ? "bg-white-600 transition-transform focus:outline-none focus:ring focus:ring-blue-500"
                       : ""
-                    }`}
+                  }`}
                   onMouseDown={handleMouseDown}
                   onMouseUp={handleMouseUp}
                   disabled={isLoading} // Disable the button while loading

@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import NewPatientForm from "./NewPatientForm.tsx";
 import PatientHistory from "./PatientHistory.tsx";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -19,7 +18,6 @@ const PatientManager = () => {
     Description: "",
     CurrentMedications: "",
     PriorMedications: "",
-    PossibleMedications: { drugs: [] },
     Depression: "",
     Hypomania: "",
     Mania: "",
@@ -31,6 +29,11 @@ const PatientManager = () => {
     weight_gain: "",
     Reproductive: "",
     risk_pregnancy: "",
+    PossibleMedications: {
+      first: "",
+      second: "",
+      third: "",
+    },
   });
 
   const handlePatientDeleted = (deletedId: string) => {
@@ -42,7 +45,6 @@ const PatientManager = () => {
         Description: "",
         CurrentMedications: "",
         PriorMedications: "",
-        PossibleMedications: { drugs: [] },
         Depression: "",
         Hypomania: "",
         Mania: "",
