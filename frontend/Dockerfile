@@ -1,5 +1,4 @@
-# This dockerfile builds an image for a Vite development server
-# Use the official Node.js image as the base image
+# Use the official Node.js 14 image as the base image
 FROM node:18
 
 # Set the working directory inside the container
@@ -15,12 +14,12 @@ RUN npm install
 COPY . .
 
 # Build the project
-# RUN npm run build
+RUN npm run build
 
 # Expose a port if required
-# EXPOSE 3000
+EXPOSE 3000
 
-# Start the dev server
+# Start the application
 CMD [ "npm", "run", "dev" ]
 
 # Set the image name

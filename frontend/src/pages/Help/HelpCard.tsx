@@ -23,6 +23,12 @@ function HelpCard(data: HelpProps) {
     }
     setTitle(data.title);
     setParagraph(data.paragraph);
+    // if (data.icon == "UserDoctor") {
+    //   setIcon(<UserDoctor />);
+    // } else if (data.icon == "FeedbackIcon") {
+    //   setIcon(<FeedbackIcon />);
+    // } else if (data.icon == "MagnifyingGlassChart") {
+    //   setIcon(<MagnifyingGlassChart />);
     switch (data.icon) {
       case "UserDoctor":
         setIcon(<UserDoctor />);
@@ -34,13 +40,14 @@ function HelpCard(data: HelpProps) {
         setIcon(<MagnifyingGlassChart />);
         break;
       default:
-        setIcon(null); 
+        setIcon(null);
     }
-  }, 
-  [data.icon, data.title, data.paragraph]); 
+    // }, [paragraph, data, title]);
+  }, [data.icon, data.title, data.paragraph]);
 
   return (
-    <div className="flex h-72 w-full max-w-6xl md:max flex-col items-center justify-center rounded-xl border-2 border-blue-100 bg-neutral-50 px-4 shadow-md md:mt-28">
+    // <div className="flex h-72 w-full max-w-6xl flex-col items-center justify-center rounded-xl border-2 border-blue-100 bg-neutral-50 px-4 shadow-md md:mt-28">
+    <div className="flex h-72 w-full min-w-[280px] max-w-6xl flex-col items-center justify-center rounded-xl border-2 border-blue-100 bg-neutral-50 px-4 shadow-md md:mt-28">
       <div className="flex h-full flex-col items-center">
         {icon && <div className="mt-6 h-24 w-24">{icon}</div>}
         <div className="mt-6 flex flex-col">
