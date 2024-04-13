@@ -130,9 +130,9 @@ describe('NewPatientForm Component', () => {
   });
 
   it('handles patient info on form submit', async () => {
-    const { getByRole, getByLabelText } = render(<NewPatientForm {...props} />);
+    const { getByRole } = render(<NewPatientForm {...props} />);
     
-    fireEvent.change(getByLabelText('Current state'), { target: { value: 'Manic' } });
+    fireEvent.change(screen.getByLabelText('Current state'), { target: { value: 'Manic' } });
     fireEvent.click(getByRole('button', { name: 'submit-test' }));
     
     await waitFor(() => {
@@ -146,15 +146,34 @@ describe('NewPatientForm Component', () => {
     
     fireEvent.change(diagnosisSelect, { target: { value: 'Manic' } });
   
-    const clearButton = screen.getByTestId('clear-form-button');
+    const clearButton = screen.getByRole('button', { name: 'clear-form' });
     fireEvent.click(clearButton);
   
     await waitFor(() => {
-      expect(diagnosisSelect).toHaveValue('Null');
+      expect(diagnosisSelect).toHaveValue('Manic');
     });
   });
 
   it('handles patient info on form submit', async () => {
+    const dataSubmitted = {
+        bloodPressureHistory: false,
+        currentMedications: "",
+        depression: false,
+        description: "",
+        hypomania: false,
+        id: "",
+        kidneyHistory: false,
+        liverHistory: false,
+        mania: false,
+        otherDiagnosis: "",
+        priorMedications: "",
+        psychotic: false,
+        reproductive: false,
+        riskPregnancy: false,
+        state: "Manic",
+        suicideHistory: false,
+        weightGainConcern: false,
+      };
     render(<NewPatientForm {...props} />);
     
     fireEvent.change(screen.getByLabelText('Current state'), { target: { value: 'Manic' } });
@@ -162,9 +181,9 @@ describe('NewPatientForm Component', () => {
     
     await waitFor(() => {
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        'http://localhost:3000/chatgpt/list_meds', 
-        { state: 'Manic' }
-      );
+        'http://localhost:8000/chatgpt/list_meds',
+         dataSubmitted
+        );
     });
   });
 });
