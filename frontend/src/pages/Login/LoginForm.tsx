@@ -7,6 +7,9 @@ import { RootState } from "../../services/actions/types";
 import { useState, useEffect } from "react";
 import ErrorMessage from "../../components/ErrorMessage";
 
+//April 23, 2024: changed "id" in email input field from "login-email" 
+//to "email" so that it matches the value in htmlFor - Kristo
+
 interface LoginFormProps {
   isAuthenticated: boolean;
   loginError?: string | null; // Align this with the mapped state
@@ -70,7 +73,7 @@ function LoginForm({ isAuthenticated, loginError }: LoginFormProps) {
               Email
             </label>
             <input
-              id="login-email"
+              id="email"
               name="email"
               type="email"
               onChange={handleChange}
