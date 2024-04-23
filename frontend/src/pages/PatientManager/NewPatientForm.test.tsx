@@ -176,6 +176,7 @@ describe('NewPatientForm Component', () => {
         suicideHistory: false,
         weightGainConcern: false,
       };
+      
     render(<NewPatientForm {...props} />);
     
     fireEvent.change(screen.getByLabelText('Current state'), { target: { value: 'Manic' } });
