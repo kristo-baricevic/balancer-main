@@ -91,6 +91,8 @@ const props = {
 describe('NewPatientForm useEffect', () => {
   it('loads patient info from localStorage on mount', () => {
     render(<NewPatientForm {...props} />);
+
+
     expect(mockSetAllPatientInfo).toHaveBeenCalledWith([mockPatientInfo]);
   });
 });
@@ -132,7 +134,7 @@ describe('NewPatientForm Component', () => {
   it('handles patient info on form submit', async () => {
     const { getByRole } = render(<NewPatientForm {...props} />);
     
-    fireEvent.change(screen.getByLabelText('Current state'), { target: { value: 'Manic' } });
+    fireEvent.change(screen.getByLabelText('Current state'), { target: { value: 'Depressed' } });
     fireEvent.click(getByRole('button', { name: 'submit-test' }));
     
     await waitFor(() => {
