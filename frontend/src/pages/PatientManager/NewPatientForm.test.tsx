@@ -6,7 +6,6 @@ import axios from 'axios';
 vi.mock('axios');
 const mockedAxios = vi.mocked(axios, true);
   
-// Implement a mock function that can handle both overloads
 window.scrollTo = vi.fn((...args: [ScrollToOptions?] | [number, number]) => {
 if (args.length === 1 && typeof args[0] === 'object') {
     console.log(`Scrolling with options`, args[0]);
@@ -176,7 +175,7 @@ describe('NewPatientForm Component', () => {
         suicideHistory: false,
         weightGainConcern: false,
       };
-      
+
     render(<NewPatientForm {...props} />);
     
     fireEvent.change(screen.getByLabelText('Current state'), { target: { value: 'Manic' } });
