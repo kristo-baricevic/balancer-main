@@ -5,10 +5,10 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { useNavigate } from 'react-router-dom';
-import LoginForm from './LoginForm'; // Update this path if it is incorrect
-import configureTestStore from '../../services/testStore'; // Ensure path and TypeScript types are correct
+import LoginForm from './LoginForm'; 
+import configureTestStore from '../../services/testStore';
 
-// Mocking axios and react-router-dom with correct TypeScript types
+// Mocking axios and react-router-dom 
 vi.mock('axios', () => ({
   default: {
     post: vi.fn(() => Promise.resolve({
@@ -36,6 +36,7 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
+// Mocking jwtDecode to return login credentials
 vi.mock('jwt-decode', () => ({
   jwtDecode: vi.fn((token: string) => ({
     is_superuser: true,
@@ -50,6 +51,7 @@ describe('LoginForm Component', () => {
     let navigate: any;
 
     beforeEach(() => {
+        //Mock store
         window.localStorage.clear();
         store = configureTestStore({
             auth: {
@@ -57,6 +59,8 @@ describe('LoginForm Component', () => {
                 error: null,
             }
         });
+
+        //mock page navigation
         navigate = vi.fn();
         vi.mocked(useNavigate, true).mockReturnValue(navigate);
     });
